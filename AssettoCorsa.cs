@@ -8,8 +8,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using Timer = System.Timers.Timer;
 
-namespace AssettoCorsaSharedMemory
+namespace assettocorsasharedmemory
 {
     public delegate void PhysicsUpdatedHandler(object sender, PhysicsEventArgs e);
     public delegate void GraphicsUpdatedHandler(object sender, GraphicsEventArgs e);
@@ -34,7 +35,7 @@ namespace AssettoCorsaSharedMemory
 
         private AC_STATUS gameStatus = AC_STATUS.AC_OFF;
 
-        public event GameStatusChangedHandler GameStatusChanged;
+        public event GameStatusChangedHandler? GameStatusChanged;
         public virtual void OnGameStatusChanged(GameStatusEventArgs e)
         {
             if (GameStatusChanged != null)
@@ -83,7 +84,7 @@ namespace AssettoCorsaSharedMemory
             sharedMemoryRetryTimer.Start();
         }
 
-        void sharedMemoryRetryTimer_Elapsed(object sender, ElapsedEventArgs e)
+        void sharedMemoryRetryTimer_Elapsed(object? sender, ElapsedEventArgs e)
         {
             ConnectToSharedMemory();
         }
@@ -181,9 +182,9 @@ namespace AssettoCorsaSharedMemory
             }
         }
 
-        MemoryMappedFile physicsMMF;
-        MemoryMappedFile graphicsMMF;
-        MemoryMappedFile staticInfoMMF;
+        MemoryMappedFile? physicsMMF;
+        MemoryMappedFile? graphicsMMF;
+        MemoryMappedFile? staticInfoMMF;
 
         Timer physicsTimer;
         Timer graphicsTimer;
@@ -192,17 +193,17 @@ namespace AssettoCorsaSharedMemory
         /// <summary>
         /// Represents the method that will handle the physics update events
         /// </summary>
-        public event PhysicsUpdatedHandler PhysicsUpdated;
+        public event PhysicsUpdatedHandler? PhysicsUpdated;
 
         /// <summary>
         /// Represents the method that will handle the graphics update events
         /// </summary>
-        public event GraphicsUpdatedHandler GraphicsUpdated;
+        public event GraphicsUpdatedHandler? GraphicsUpdated;
 
         /// <summary>
         /// Represents the method that will handle the static info update events
         /// </summary>
-        public event StaticInfoUpdatedHandler StaticInfoUpdated;
+        public event StaticInfoUpdatedHandler? StaticInfoUpdated;
 
         public virtual void OnPhysicsUpdated(PhysicsEventArgs e)
         {
@@ -220,7 +221,9 @@ namespace AssettoCorsaSharedMemory
                 if (gameStatus != e.Graphics.Status)
                 {
                     gameStatus = e.Graphics.Status;
-                    GameStatusChanged(this, new GameStatusEventArgs(gameStatus));
+                    if (GameStatusChanged != null) {
+                        GameStatusChanged(this, new GameStatusEventArgs(gameStatus));
+                    }
                 }
             }
         }
@@ -233,17 +236,17 @@ namespace AssettoCorsaSharedMemory
             }
         }
 
-        private void physicsTimer_Elapsed(object sender, ElapsedEventArgs e)
+        private void physicsTimer_Elapsed(object? sender, ElapsedEventArgs e)
         {
             ProcessPhysics();
         }
 
-        private void graphicsTimer_Elapsed(object sender, ElapsedEventArgs e)
+        private void graphicsTimer_Elapsed(object? sender, ElapsedEventArgs e)
         {
             ProcessGraphics();
         }
 
-        private void staticInfoTimer_Elapsed(object sender, ElapsedEventArgs e)
+        private void staticInfoTimer_Elapsed(object? sender, ElapsedEventArgs e)
         {
             ProcessStaticInfo();
         }

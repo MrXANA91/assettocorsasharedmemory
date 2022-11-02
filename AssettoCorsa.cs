@@ -218,12 +218,12 @@ namespace assettocorsasharedmemory
             if (GraphicsUpdated != null)
             {
                 GraphicsUpdated(this, e);
-                if (gameStatus != e.Graphics.Status)
-                {
-                    gameStatus = e.Graphics.Status;
-                    if (GameStatusChanged != null) {
-                        GameStatusChanged(this, new GameStatusEventArgs(gameStatus));
-                    }
+            }
+            if (gameStatus != e.Graphics.Status)
+            {
+                gameStatus = e.Graphics.Status;
+                if (GameStatusChanged != null) {
+                    GameStatusChanged(this, new GameStatusEventArgs(gameStatus));
                 }
             }
         }

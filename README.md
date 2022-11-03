@@ -1,7 +1,7 @@
 Assetto Corsa Shared Memory Library
 ===================================
 
-Assetto Corsa Shared Memory library written in C# to access live game data
+Assetto Corsa Shared Memory library written in C# to access live game data, originally by mjdarv.
 
 The code was built around the shared memory structures described here on the official Assetto Corsa forum:
 http://www.assettocorsa.net/forum/index.php?threads/shared-memory-reference.3352/
@@ -12,13 +12,15 @@ class: AssettoCorsa
 
 This is the centerpiece of the library. Using this you can add your own event listeners to trigger for updates.
 
-There are three events to listen for:
+There are four events to listen for:
 
 * AssettoCorsa.StaticInfoUpdated
-* AssettoCorsa.GraphicsUpdated
 * AssettoCorsa.PhysicsUpdated
+* AssettoCorsa.GraphicsUpdated
+* AssettoCorsa.GameStatusChanged 
 
-These events have individual timers and their respective update intervals can be changed to fit your own needs. Timers will not be running if an event has no listeners.
+The first three events have individual timers and their respective update intervals can be changed to fit your own needs. Timers will not be running if an event has no listeners.
+The GameStatusChanged event use the Graphics timer. Even if the GraphicsUpdated event has no listeners, GameStatusChanged will still trigger.
 
 The default update intervals are:
 
